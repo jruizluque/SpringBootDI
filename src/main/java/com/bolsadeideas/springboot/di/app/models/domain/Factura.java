@@ -2,6 +2,9 @@ package com.bolsadeideas.springboot.di.app.models.domain;
 
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -17,6 +20,17 @@ public class Factura {
 	
 	@Autowired
 	private List<ItemFactura> items;
+	
+	@PostConstruct
+	public void init() {
+		this.cliente.setNombre(this.cliente.getNombre().concat(" ").concat("José"));
+		this.descripcion = this.descripcion.concat(" del cliente: ").concat(this.cliente.getNombre());
+	}
+	
+	@PreDestroy
+	public void destroy() {
+		System.out.println("Factura destruida: ".concat(this.descripcion));
+	}
 
 	public String getDescripcion() {
 		return descripcion;
